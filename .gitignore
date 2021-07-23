@@ -1,1 +1,6 @@
 *.log
+*.exe
+*.deb
+gocqhttp/data
+gocqhttp/logs
+gocqhttp/*.token

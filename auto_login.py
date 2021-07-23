@@ -142,7 +142,7 @@ def record_trophies(driver, cur_char, battle_count=0):
         battle_count (int, optional): the number of battle to check. Defaults to 0 to check the latest battle.
 
     Returns:
-        list(str): a list of trophies acquired
+        dict{int:list(str)}: a dict of trophies acquired for battles
     """
     driver.get(f"http://delta.world-of-dungeons.org/wod/spiel/dungeon/report.php?session_hero_id={cur_char}")
     # TODO: add database for recording
@@ -154,7 +154,8 @@ def record_trophies(driver, cur_char, battle_count=0):
         for i in char.parent.find_all('a', class_="report rep_uni item_unique"):
             findings.append(i.string)
     # TODO: find items in wishlist
-    return findings
+    # TODO: find completion of each character
+    return {battle_count:findings}
 
 def auto_rotation():
     """start the battle regularly for mini teams. IDs of rotated characters need to be assigned in this function. 
@@ -168,7 +169,7 @@ def auto_rotation():
     # avatar ids
     avatars = {'Johnny':102198, 'Blackstick':100555, 'Phaziben':103225, 'Jan':102415, 'Baggins':103900, 'Frint':101489}
 
-    driver = start_browser()
+    driver = start_browser(True)
     # delay()
     next_time = start_dungeon(driver, avatars['Blackstick'], avatars['Frint'], 
                                 avatars['Jan'], avatars['Johnny'], avatars['Blackstick'], 
@@ -177,7 +178,8 @@ def auto_rotation():
     # next_time_2 = start_dungeon(driver, avatars['Jan'], avatars['Lios'], avatars['Blackstick'], avatars['Lios'])
     # next_time = find_latest(next_time_1, next_time_2)
 
-    print(record_trophies(driver, avatars['Frint']))
+    # TODO: need to change activation or record the result when finishing the battle
+    # print(record_trophies(driver, avatars['Frint']))
 
     driver.quit()
     print("****************END ROTATION****************")

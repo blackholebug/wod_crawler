@@ -6,6 +6,7 @@ from selenium.common.exceptions import NoSuchElementException
 from bs4 import BeautifulSoup
 import re
 import time
+import json
 
 def delay(sec=5):
     time.sleep(sec)
@@ -25,6 +26,16 @@ def start_browser(headless=False):
     return driver
 
 def record_trophies(driver, cur_char, battle_count=0):
+    """record the trophies from last battle
+
+    Args:
+        driver (webdriver): a Firefox session
+        cur_char (int): the id of the character to request trophies
+        battle_count (int, optional): the number of battle to check. Defaults to 0 to check the latest battle.
+
+    Returns:
+        list(str): a list of trophies acquired
+    """
     driver.get(f"http://delta.world-of-dungeons.org/wod/spiel/dungeon/report.php?session_hero_id={cur_char}")
     # TODO: add database for recording
     driver.find_element_by_xpath(f"//input[@name='items[{battle_count}]']").click()
@@ -35,10 +46,18 @@ def record_trophies(driver, cur_char, battle_count=0):
         for i in char.parent.find_all('a', class_="report rep_uni item_unique"):
             findings.append(i.string)
     # TODO: find items in wishlist
-    return findings
+    # TODO: find completion of each character
+    return {battle_count:findings}
 
 
 avatars = {'Johnny':102198, 'Blackstick':100555, 'Phaziben':103225, 'Jan':102415, 'Baggins':103900, 'Frint':101489}
 driver = start_browser(True)
-print(record_trophies(driver, avatars['Jan'], 4))
+trophies = record_trophies(driver, avatars['Jan'], 0)
 driver.quit()
+
+with open('./trophies.log', 'w', encoding='utf-8') as f:
+    json.dump(trophies, f, indent=2)
+with open('./trophies.log', 'r', encoding='utf-8') as f:
+    raw_text = json.load(f)
+
+print(raw_text)
