@@ -80,7 +80,7 @@ def start_browser(headless=False):
     Select(driver.find_element_by_id("world")).select_by_value("CD")
     driver.find_element_by_xpath('//*[@id="USERNAME"]').send_keys('blackstick')
     driver.find_element_by_xpath('//*[@id="PASSWORT"]').send_keys('mD8kMbRyF7giAJK', Keys.ENTER)
-    delay(5)
+    delay()
     return driver
 
 # TODO: empty the bag and check repository
@@ -104,6 +104,13 @@ def start_dungeon(driver, cur_main_char, rot_main_char, *rotation):
         driver.find_element_by_xpath(f'//td/input[@value="{rot_main_char}"]').click()
         driver.find_element_by_xpath('//p/input[@name="ok"]').click()
 
+        # empty the temporary bag for each character 
+        for id in rotation[len(rotation)//2:]:
+            try:
+                driver.get(f"http://delta.world-of-dungeons.org/wod/spiel/hero/items.php?session_hero_id={id}")
+                delay()
+            except Exception:
+                print(f"Cannot have access to the repository of character {id}")
         # request the dungeon
         try:
             driver.get(f"http://delta.world-of-dungeons.org/wod/spiel/settings/heroes.php?session_hero_id={rot_main_char}")
@@ -114,12 +121,14 @@ def start_dungeon(driver, cur_main_char, rot_main_char, *rotation):
             print(f"No dungeon is avaliable to start for main character {rot_main_char}")
             # TODO: deal with nothing runing
             next_time = driver.find_element_by_xpath('//span[@id="gadgetNextdungeonTime"]').get_attribute("innerHTML")
+        # wait untill the battle finished
         try:
             driver.get(f"http://delta.world-of-dungeons.org/wod/spiel/settings/heroes.php?session_hero_id={rot_main_char}")
             speed_up = driver.find_element_by_xpath('//input[@name="reduce_dungeon_time"]')
             next_time = speed_up.get_attribute('value')[-5:]
             speed_up.click()
         except NoSuchElementException:
+            # TODO: While finishing a time-limited dungeon, there could be no regular dungeon to start...
             print(f"No dungeon is avaliable to speed up for main character {rot_main_char}")
             next_time = driver.find_element_by_xpath('//span[@id="gadgetNextdungeonTime"]').get_attribute("innerHTML")[-5:]
         finally:
@@ -169,6 +178,7 @@ def auto_rotation():
     # avatar ids
     avatars = {'Johnny':102198, 'Blackstick':100555, 'Phaziben':103225, 'Jan':102415, 'Baggins':103900, 'Frint':101489}
 
+    # enable the headless browser
     driver = start_browser(True)
     # delay()
     next_time = start_dungeon(driver, avatars['Blackstick'], avatars['Frint'], 
@@ -186,7 +196,7 @@ def auto_rotation():
     return wrap_time(next_time)  # wrapped as GM time
 
 while True:
-    print(f"Current time: {time.strftime('%H:%M', time.gmtime())}")
+    print(f"Current time: {time.strftime('%m-%d %H:%M', time.gmtime())}")
     next_time = auto_rotation()
     print(f"Next dungeon will start on : {next_time}")
     delay(sleep_time(next_time) + 60)

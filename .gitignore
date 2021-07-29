@@ -4,3 +4,4 @@
 gocqhttp/data
 gocqhttp/logs
 gocqhttp/*.token
+bot/bot_plugins/__pycache__
