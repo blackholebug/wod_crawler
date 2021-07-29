@@ -1,0 +1,127 @@
+This system has been minimized by removing packages and content that are
+not required on a system that users do not log into.
+
+To restore this content, including manpages, you can run the 'unminimize'
+command. You will still need to ensure the 'man-db' package is installed.
+This system has been minimized by removing packages and content that are
+not required on a system that users do not log into.
+
+To restore this content, including manpages, you can run the 'unminimize'
+command. You will still need to ensure the 'man-db' package is installed.
+This system has been minimized by removing packages and content that are
+not required on a system that users do not log into.
+
+To restore this content, including manpages, you can run the 'unminimize'
+command. You will still need to ensure the 'man-db' package is installed.
+auto_login.py:78: DeprecationWarning: use options instead of firefox_options
+  driver = webdriver.Firefox(firefox_options=options) if headless else webdriver.Firefox()
+auto_login.py:78: DeprecationWarning: use options instead of firefox_options
+  driver = webdriver.Firefox(firefox_options=options) if headless else webdriver.Firefox()
+auto_login.py:78: DeprecationWarning: use options instead of firefox_options
+  driver = webdriver.Firefox(firefox_options=options) if headless else webdriver.Firefox()
+auto_login.py:78: DeprecationWarning: use options instead of firefox_options
+  driver = webdriver.Firefox(firefox_options=options) if headless else webdriver.Firefox()
+auto_login.py:78: DeprecationWarning: use options instead of firefox_options
+  driver = webdriver.Firefox(firefox_options=options) if headless else webdriver.Firefox()
+auto_login.py:78: DeprecationWarning: use options instead of firefox_options
+  driver = webdriver.Firefox(firefox_options=options) if headless else webdriver.Firefox()
+auto_login.py:78: DeprecationWarning: use options instead of firefox_options
+  driver = webdriver.Firefox(firefox_options=options) if headless else webdriver.Firefox()
+auto_login.py:78: DeprecationWarning: use options instead of firefox_options
+  driver = webdriver.Firefox(firefox_options=options) if headless else webdriver.Firefox()
+auto_login.py:78: DeprecationWarning: use options instead of firefox_options
+  driver = webdriver.Firefox(firefox_options=options) if headless else webdriver.Firefox()
+auto_login.py:78: DeprecationWarning: use options instead of firefox_options
+  driver = webdriver.Firefox(firefox_options=options) if headless else webdriver.Firefox()
+auto_login.py:78: DeprecationWarning: use options instead of firefox_options
+  driver = webdriver.Firefox(firefox_options=options) if headless else webdriver.Firefox()
+auto_login.py:78: DeprecationWarning: use options instead of firefox_options
+  driver = webdriver.Firefox(firefox_options=options) if headless else webdriver.Firefox()
+auto_login.py:78: DeprecationWarning: use options instead of firefox_options
+  driver = webdriver.Firefox(firefox_options=options) if headless else webdriver.Firefox()
+Current time: 10:47
+****************START ROTATION****************
+No dungeon is avaliable to start for main character 101489
+No dungeon is avaliable to speed up for main character 101489
+****************END ROTATION****************
+Next dungeon will start on : 17:22
+Current time: 17:23
+****************START ROTATION****************
+****************END ROTATION****************
+Next dungeon will start on : 00:23
+Current time: 00:24
+****************START ROTATION****************
+****************END ROTATION****************
+Next dungeon will start on : 07:14
+Current time: 07:15
+****************START ROTATION****************
+****************END ROTATION****************
+Next dungeon will start on : 14:08
+Current time: 14:09
+****************START ROTATION****************
+****************END ROTATION****************
+Next dungeon will start on : 21:00
+Current time: 21:01
+****************START ROTATION****************
+****************END ROTATION****************
+Next dungeon will start on : 04:07
+Current time: 04:08
+****************START ROTATION****************
+****************END ROTATION****************
+Next dungeon will start on : 11:14
+Current time: 11:15
+****************START ROTATION****************
+****************END ROTATION****************
+Next dungeon will start on : 18:24
+Current time: 18:25
+****************START ROTATION****************
+****************END ROTATION****************
+Next dungeon will start on : 01:31
+Current time: 01:32
+****************START ROTATION****************
+****************END ROTATION****************
+Next dungeon will start on : 08:34
+Current time: 08:35
+****************START ROTATION****************
+****************END ROTATION****************
+Next dungeon will start on : 15:35
+Current time: 15:36
+****************START ROTATION****************
+****************END ROTATION****************
+Next dungeon will start on : 22:38
+Current time: 22:39
+****************START ROTATION****************
+No dungeon is avaliable to speed up for main character 101489
+Traceback (most recent call last):
+  File "auto_login.py", line 119, in start_dungeon
+    speed_up = driver.find_element_by_xpath('//input[@name="reduce_dungeon_time"]')
+  File "/home/ubuntu/miniconda3/envs/wod/lib/python3.7/site-packages/selenium/webdriver/remote/webdriver.py", line 394, in find_element_by_xpath
+    return self.find_element(by=By.XPATH, value=xpath)
+  File "/home/ubuntu/miniconda3/envs/wod/lib/python3.7/site-packages/selenium/webdriver/remote/webdriver.py", line 978, in find_element
+    'value': value})['value']
+  File "/home/ubuntu/miniconda3/envs/wod/lib/python3.7/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
+    self.error_handler.check_response(response)
+  File "/home/ubuntu/miniconda3/envs/wod/lib/python3.7/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: //input[@name="reduce_dungeon_time"]
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "auto_login.py", line 190, in <module>
+    next_time = auto_rotation()
+  File "auto_login.py", line 176, in auto_rotation
+    avatars['Phaziben'], avatars['Frint'], avatars['Baggins'])
+  File "auto_login.py", line 124, in start_dungeon
+    next_time = driver.find_element_by_xpath('//span[@id="gadgetNextdungeonTime"]').get_attribute("innerHTML")[-5:]
+  File "/home/ubuntu/miniconda3/envs/wod/lib/python3.7/site-packages/selenium/webdriver/remote/webdriver.py", line 394, in find_element_by_xpath
+    return self.find_element(by=By.XPATH, value=xpath)
+  File "/home/ubuntu/miniconda3/envs/wod/lib/python3.7/site-packages/selenium/webdriver/remote/webdriver.py", line 978, in find_element
+    'value': value})['value']
+  File "/home/ubuntu/miniconda3/envs/wod/lib/python3.7/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
+    self.error_handler.check_response(response)
+  File "/home/ubuntu/miniconda3/envs/wod/lib/python3.7/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: //span[@id="gadgetNextdungeonTime"]
+
