@@ -183,7 +183,7 @@ def auto_rotation():
     avatars = {'Johnny':102198, 'Blackstick':100555, 'Phaziben':103225, 'Jan':102415, 'Baggins':103900, 'Frint':101489}
 
     # enable the headless browser
-    driver = start_browser()
+    driver = start_browser(True)
     # delay()
     next_time = start_dungeon(driver, avatars['Blackstick'], avatars['Frint'], 
                                 avatars['Jan'], avatars['Johnny'], avatars['Blackstick'], 
