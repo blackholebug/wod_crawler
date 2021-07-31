@@ -83,6 +83,7 @@ def start_browser(headless=False):
     delay()
     return driver
 
+
 # TODO: empty the bag and check repository
 def start_dungeon(driver, cur_main_char, rot_main_char, *rotation):
     """automatically start dungeon
@@ -120,7 +121,7 @@ def start_dungeon(driver, cur_main_char, rot_main_char, *rotation):
         except NoSuchElementException:
             print(f"No dungeon is avaliable to start for main character {rot_main_char}")
             # TODO: deal with nothing runing
-            next_time = driver.find_element_by_xpath('//span[@id="gadgetNextdungeonTime"]').get_attribute("innerHTML")
+            next_time = driver.find_element_by_xpath('//span[@id="gadgetNextdungeonTime"]').get_attribute("innerHTML")[-5:]
         # wait untill the battle finished
         try:
             driver.get(f"http://delta.world-of-dungeons.org/wod/spiel/settings/heroes.php?session_hero_id={rot_main_char}")
@@ -130,7 +131,10 @@ def start_dungeon(driver, cur_main_char, rot_main_char, *rotation):
         except NoSuchElementException:
             # TODO: While finishing a time-limited dungeon, there could be no regular dungeon to start...
             print(f"No dungeon is avaliable to speed up for main character {rot_main_char}")
-            next_time = driver.find_element_by_xpath('//span[@id="gadgetNextdungeonTime"]').get_attribute("innerHTML")[-5:]
+            try: 
+                next_time = driver.find_element_by_xpath('//span[@id="gadgetNextdungeonTime"]').get_attribute("innerHTML")[-5:]
+            except NoSuchElementException:
+                print("I guess no dungeon is running now...")
         finally:
             # resume to previous avatars
             for id in rotation: 
@@ -179,7 +183,7 @@ def auto_rotation():
     avatars = {'Johnny':102198, 'Blackstick':100555, 'Phaziben':103225, 'Jan':102415, 'Baggins':103900, 'Frint':101489}
 
     # enable the headless browser
-    driver = start_browser(True)
+    driver = start_browser()
     # delay()
     next_time = start_dungeon(driver, avatars['Blackstick'], avatars['Frint'], 
                                 avatars['Jan'], avatars['Johnny'], avatars['Blackstick'], 
