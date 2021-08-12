@@ -6,6 +6,8 @@ from selenium.common.exceptions import NoSuchElementException
 from bs4 import BeautifulSoup
 
 # TODO: import argparse
+# TODO: check if the current configration is correct or not
+
 import re
 import time
 
@@ -39,9 +41,12 @@ def wrap_time(next_time):
     Returns:
         str: next time in gmtime
     """
-    # Convert to GM time
-    (hour, minu) = ((int(next_time[:2])-2)%24, next_time[-2:])
-    return f"{hour:02d}:{minu}"
+    if next_time == "99:99":
+        return next_time
+    else: 
+        # Convert to GM time
+        (hour, minu) = ((int(next_time[:2])-2)%24, next_time[-2:])
+        return f"{hour:02d}:{minu}"
 
 def find_latest(time1, time2):
     """to find the latest time to start next battle when having multiple teams to rotate
@@ -97,6 +102,7 @@ def start_dungeon(driver, cur_main_char, rot_main_char, *rotation):
         str: local time to start next battle
     """
     driver.get("http://delta.world-of-dungeons.org/wod/spiel/settings/heroes.php")
+    delay()
     ## change activated avatars
     if rotation:
         for id in rotation: 
@@ -117,7 +123,7 @@ def start_dungeon(driver, cur_main_char, rot_main_char, *rotation):
             driver.get(f"http://delta.world-of-dungeons.org/wod/spiel/settings/heroes.php?session_hero_id={rot_main_char}")
             start_battle = driver.find_element_by_xpath('//input[@name="reduce_dungeon_time"]')
             start_battle.click()
-            delay(60)
+            delay(30)
         except NoSuchElementException:
             print(f"No dungeon is avaliable to start for main character {rot_main_char}")
             # TODO: deal with nothing runing
@@ -135,6 +141,7 @@ def start_dungeon(driver, cur_main_char, rot_main_char, *rotation):
                 next_time = driver.find_element_by_xpath('//span[@id="gadgetNextdungeonTime"]').get_attribute("innerHTML")[-5:]
             except NoSuchElementException:
                 print("I guess no dungeon is running now...")
+                next_time = "99:99"
         finally:
             # resume to previous avatars
             for id in rotation: 
@@ -180,16 +187,20 @@ def auto_rotation():
 
     print("****************START ROTATION****************")
     # avatar ids
-    avatars = {'Johnny':102198, 'Volo':104539, 'Phaziben':103225, 'Jan':102415, 'Baggins':103900, 'Frint':101489}
+    avatars = {'Johnny':102198, 'Volo':104539, 'Phaziben':103225, 'Jan':102415, 'Baggins':103900, 'Frint':101489, 'Bubu':105027}
 
     # enable the headless browser
     driver = start_browser(True)
     # delay()
-    next_time = start_dungeon(driver, avatars['Volo'], avatars['Frint'], 
+
+    time1 = start_dungeon(driver, avatars['Volo'], avatars['Bubu'], avatars['Volo'], avatars['Bubu'])
+
+    time2 = start_dungeon(driver, avatars['Volo'], avatars['Frint'], 
                                 avatars['Jan'], avatars['Johnny'], avatars['Volo'], 
                                 avatars['Phaziben'], avatars['Frint'], avatars['Baggins'])
-    delay()
 
+    next_time = find_latest(time1, time2)
+    delay()
     # TODO: need to change activation or record the result when finishing the battle
     # print(record_trophies(driver, avatars['Frint']))
     driver.quit()
