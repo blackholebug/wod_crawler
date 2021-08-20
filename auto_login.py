@@ -187,16 +187,20 @@ def auto_rotation():
 
     print("****************START ROTATION****************")
     # avatar ids
-    avatars = {'Johnny':102198, 'Volo':104539, 'Phaziben':103225, 'Jan':102415, 'Baggins':103900, 'Frint':101489, 'Bubu':105027}
+    avatars = {'Shiqian':102198, 'Volo':104539, 'Jan':102415, 
+                'Phaziben':103225, 'Baggins':103900, 'Frint':101489,
+                'Bubu':105027, 'Artanis':105461, 'Russ':105463}
 
     # enable the headless browser
     driver = start_browser(True)
     # delay()
 
     time1 = start_dungeon(driver, avatars['Volo'], avatars['Bubu'], avatars['Volo'], avatars['Bubu'])
+    time1 = start_dungeon(driver, avatars['Volo'], avatars['Artanis'], avatars['Volo'], avatars['Artanis'])
+    time1 = start_dungeon(driver, avatars['Volo'], avatars['Russ'], avatars['Volo'], avatars['Russ'])
 
     time2 = start_dungeon(driver, avatars['Volo'], avatars['Frint'], 
-                                avatars['Jan'], avatars['Johnny'], avatars['Volo'], 
+                                avatars['Jan'], avatars['Shiqian'], avatars['Volo'], 
                                 avatars['Phaziben'], avatars['Frint'], avatars['Baggins'])
 
     next_time = find_latest(time1, time2)
