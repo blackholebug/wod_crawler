@@ -196,13 +196,13 @@ def auto_rotation():
     # delay()
 
     time1 = start_dungeon(driver, avatars['Volo'], avatars['Bubu'], avatars['Volo'], avatars['Bubu'])
-    time1 = start_dungeon(driver, avatars['Volo'], avatars['Artanis'], avatars['Volo'], avatars['Artanis'])
-    time1 = start_dungeon(driver, avatars['Volo'], avatars['Russ'], avatars['Volo'], avatars['Russ'])
-
+    time2 = start_dungeon(driver, avatars['Volo'], avatars['Artanis'], avatars['Volo'], avatars['Artanis'])
+    time1 = find_latest(time1, time2)
+    time2 = start_dungeon(driver, avatars['Volo'], avatars['Russ'], avatars['Volo'], avatars['Russ'])
+    time1 = find_latest(time1, time2)
     time2 = start_dungeon(driver, avatars['Volo'], avatars['Frint'], 
                                 avatars['Jan'], avatars['Shiqian'], avatars['Volo'], 
                                 avatars['Phaziben'], avatars['Frint'], avatars['Baggins'])
-
     next_time = find_latest(time1, time2)
     delay()
     # TODO: need to change activation or record the result when finishing the battle
