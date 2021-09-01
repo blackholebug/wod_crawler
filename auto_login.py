@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.firefox.options import Options
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, WebDriverException
 from bs4 import BeautifulSoup
 
 # TODO: import argparse
@@ -133,7 +133,10 @@ def start_dungeon(driver, cur_main_char, rot_main_char, *rotation):
             driver.get(f"http://delta.world-of-dungeons.org/wod/spiel/settings/heroes.php?session_hero_id={rot_main_char}")
             speed_up = driver.find_element_by_xpath('//input[@name="reduce_dungeon_time"]')
             next_time = speed_up.get_attribute('value')[-5:]
-            speed_up.click()
+            speed_up.click()    
+        # except WebDriverException:
+        #     print("Something went wrong with the website...")
+        #     delay(30)
         except NoSuchElementException:
             # TODO: While finishing a time-limited dungeon, there could be no regular dungeon to start...
             print(f"No dungeon is avaliable to speed up for main character {rot_main_char}")
@@ -189,20 +192,21 @@ def auto_rotation():
     # avatar ids
     avatars = {'Shiqian':102198, 'Volo':104539, 'Jan':102415, 
                 'Phaziben':103225, 'Baggins':103900, 'Frint':101489,
-                'Bubu':105027, 'Artanis':105461, 'Russ':105463}
+                'Bubu':106107, 'Artanis':105461, 'Russ':105463}
 
     # enable the headless browser
     driver = start_browser(True)
     # delay()
 
-    time1 = start_dungeon(driver, avatars['Volo'], avatars['Phaziben'], avatars['Volo'], avatars['Phaziben'])
-    time2 = start_dungeon(driver, avatars['Volo'], avatars['Artanis'], avatars['Volo'], avatars['Artanis'])
-    time1 = find_latest(time1, time2)
-    time2 = start_dungeon(driver, avatars['Volo'], avatars['Russ'], avatars['Volo'], avatars['Russ'])
-    time1 = find_latest(time1, time2)
+    # time1 = start_dungeon(driver, avatars['Volo'], avatars['Bubu'], avatars['Volo'], avatars['Bubu'])
+    # time2 = start_dungeon(driver, avatars['Volo'], avatars['Artanis'], avatars['Volo'], avatars['Artanis'])
+    # time1 = find_latest(time1, time2)
+    time1 = start_dungeon(driver, avatars['Volo'], avatars['Russ'], 
+                                avatars['Jan'], avatars['Shiqian'], avatars['Volo'],
+                                avatars['Bubu'], avatars['Artanis'], avatars['Russ'])
     time2 = start_dungeon(driver, avatars['Volo'], avatars['Frint'], 
                                 avatars['Jan'], avatars['Shiqian'], avatars['Volo'], 
-                                avatars['Bubu'], avatars['Frint'], avatars['Baggins'])
+                                avatars['Phaziben'], avatars['Frint'], avatars['Baggins'])
     next_time = find_latest(time1, time2)
     delay()
     # TODO: need to change activation or record the result when finishing the battle
