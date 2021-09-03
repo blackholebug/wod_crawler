@@ -192,7 +192,7 @@ def auto_rotation():
     # avatar ids
     avatars = {'Shiqian':102198, 'Volo':104539, 'Jan':102415, 
                 'Phaziben':103225, 'Baggins':103900, 'Frint':101489,
-                'Bubu':106107, 'Artanis':105461, 'Russ':105463}
+                'Bubu':106107, 'Artanis':106402, 'Russ':106407}
 
     # enable the headless browser
     driver = start_browser(True)
