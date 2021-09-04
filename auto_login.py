@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 # TODO: import argparse
 # TODO: check if the current configration is correct or not
 
-import re
+import json
 import time
 
 def delay(sec=5):
@@ -85,25 +85,48 @@ def start_browser(headless=False):
     Select(driver.find_element_by_id("world")).select_by_value("CD")
     driver.find_element_by_xpath('//*[@id="USERNAME"]').send_keys('blackstick')
     driver.find_element_by_xpath('//*[@id="PASSWORT"]').send_keys('mD8kMbRyF7giAJK', Keys.ENTER)
+    print('Loading the entrance page...')
     delay()
     return driver
 
+def resume_default(driver, default_team, avatars):
+    """set the activation avatars to the default team
+
+    Args:
+        driver (webdriver): a session of firefox
+        default_team (list): ids of avatars in the default team
+        avatars (list): names and ids of all avatars
+    """
+    for v in avatars.values():
+        if driver.find_element_by_xpath(f'//input[@name="aktiv[{v}]"]').get_attribute("checked"): 
+            if v not in default_team:
+                driver.find_element_by_xpath(f'//input[@name="aktiv[{v}]"]').click()
+        else:
+            if v in default_team:
+                driver.find_element_by_xpath(f'//input[@name="aktiv[{v}]"]').click()
+
 
 # TODO: empty the bag and check repository
-def start_dungeon(driver, cur_main_char, rot_main_char, *rotation):
+def start_dungeon(driver, avatars, cur_main_char, rot_main_char, default_team, replaced_team):
     """automatically start dungeon
 
     Args:
         driver (webdriver): a session of firefox
+        avatars (list): names and ids of all avatars 
         cur_main_char (int): id of the former activated character
         rot_main_char (int): id of the leader of mini team to activate
+        default_team (list): ids of avatars in the default team
+        replaced_team (list): ids of avatars in the replaced team
 
     Returns:
         str: local time to start next battle
     """
     driver.get("http://delta.world-of-dungeons.org/wod/spiel/settings/heroes.php")
+    print('Loading the hero selection page')
     delay()
+    resume_default(driver, default_team, avatars)
     ## change activated avatars
+    rotation = default_team + replaced_team
     if rotation:
         for id in rotation: 
             driver.find_element_by_xpath(f'//input[@name="aktiv[{id}]"]').click()
@@ -112,7 +135,7 @@ def start_dungeon(driver, cur_main_char, rot_main_char, *rotation):
         driver.find_element_by_xpath('//p/input[@name="ok"]').click()
 
         # empty the temporary bag for each character 
-        for id in rotation[len(rotation)//2:]:
+        for id in replaced_team:
             try:
                 driver.get(f"http://delta.world-of-dungeons.org/wod/spiel/hero/items.php?session_hero_id={id}")
                 delay()
@@ -123,7 +146,8 @@ def start_dungeon(driver, cur_main_char, rot_main_char, *rotation):
             driver.get(f"http://delta.world-of-dungeons.org/wod/spiel/settings/heroes.php?session_hero_id={rot_main_char}")
             start_battle = driver.find_element_by_xpath('//input[@name="reduce_dungeon_time"]')
             start_battle.click()
-            delay(30)
+            print(f'Start dungeon for main character {rot_main_char}')
+            delay(20)
         except NoSuchElementException:
             print(f"No dungeon is avaliable to start for main character {rot_main_char}")
             # TODO: deal with nothing runing
@@ -134,6 +158,7 @@ def start_dungeon(driver, cur_main_char, rot_main_char, *rotation):
             speed_up = driver.find_element_by_xpath('//input[@name="reduce_dungeon_time"]')
             next_time = speed_up.get_attribute('value')[-5:]
             speed_up.click()    
+            print(f'Speed up dungeon for main character {rot_main_char}')
         # except WebDriverException:
         #     print("Something went wrong with the website...")
         #     delay(30)
@@ -152,6 +177,7 @@ def start_dungeon(driver, cur_main_char, rot_main_char, *rotation):
             # change the main character
             driver.find_element_by_xpath(f'//td/input[@value="{cur_main_char}"]').click()
             driver.find_element_by_xpath('//p/input[@name="ok"]').click()
+            print(f'Resumed to previous characters')
         return next_time
     else: 
         print("No hero ids for rotation!!!")
@@ -190,23 +216,17 @@ def auto_rotation():
 
     print("****************START ROTATION****************")
     # avatar ids
-    avatars = {'Shiqian':102198, 'Volo':104539, 'Jan':102415, 
-                'Phaziben':103225, 'Baggins':103900, 'Frint':101489,
-                'Bubu':106107, 'Artanis':106402, 'Russ':106407}
+    with open("./config.json", "r") as config:
+        cf = json.load(config)
+    avatars = cf['avatars']
+    default_team = [avatars[name] for name in cf['default_team']] 
+    team1 = [avatars[name] for name in cf['team1']] 
+    team2 = [avatars[name] for name in cf['team2']] 
 
     # enable the headless browser
     driver = start_browser(True)
-    # delay()
-
-    # time1 = start_dungeon(driver, avatars['Volo'], avatars['Bubu'], avatars['Volo'], avatars['Bubu'])
-    # time2 = start_dungeon(driver, avatars['Volo'], avatars['Artanis'], avatars['Volo'], avatars['Artanis'])
-    # time1 = find_latest(time1, time2)
-    time1 = start_dungeon(driver, avatars['Volo'], avatars['Russ'], 
-                                avatars['Jan'], avatars['Shiqian'], avatars['Volo'],
-                                avatars['Bubu'], avatars['Artanis'], avatars['Russ'])
-    time2 = start_dungeon(driver, avatars['Volo'], avatars['Frint'], 
-                                avatars['Jan'], avatars['Shiqian'], avatars['Volo'], 
-                                avatars['Phaziben'], avatars['Frint'], avatars['Baggins'])
+    time1 = start_dungeon(driver, avatars, default_team[0], team1[0], default_team, team1)
+    time2 = start_dungeon(driver, avatars, default_team[0], team2[0], default_team, team2)
     next_time = find_latest(time1, time2)
     delay()
     # TODO: need to change activation or record the result when finishing the battle

@@ -1,0 +1,16 @@
+{
+    "avatars": {
+        "Shiqian": 102198, 
+        "Volo": 104539, 
+        "Jan": 102415, 
+        "Phaziben": 103225, 
+        "Baggins": 103900, 
+        "Frint": 101489, 
+        "Bubu": 106107, 
+        "Artanis": 106402, 
+        "Russ": 106407
+        },
+    "default_team": ["Volo", "Jan", "Shiqian"], 
+    "team1": ["Frint", "Phaziben", "Baggins"], 
+    "team2": ["Russ", "Bubu", "Artanis"] 
+}
