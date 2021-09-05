@@ -239,4 +239,4 @@ while True:
     print(f"Current time: {time.strftime('%m-%d %H:%M', time.gmtime())}")
     next_time = auto_rotation()
     print(f"Next dungeon will start on : {next_time}")
-    delay(sleep_time(next_time) + 1)
+    delay(sleep_time(next_time) + 60)
