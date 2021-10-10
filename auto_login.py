@@ -105,6 +105,20 @@ def resume_default(driver, default_team, avatars):
             if v in default_team:
                 driver.find_element_by_xpath(f'//input[@name="aktiv[{v}]"]').click()
 
+def empty_bag(driver, ids):
+    """empty bags of characters
+
+    Args:
+        driver (webdriver): a session of firefox
+        ids (list): ids of all avatars 
+    """    
+    # empty the temporary bag for each character 
+    for id in ids:
+        try:
+            driver.get(f"http://delta.world-of-dungeons.org/wod/spiel/hero/items.php?session_hero_id={id}")
+            delay()
+        except Exception:
+            print(f"Cannot have access to the repository of character {id}")
 
 # TODO: empty the bag and check repository
 def start_dungeon(driver, avatars, cur_main_char, rot_main_char, default_team, replaced_team):
@@ -135,12 +149,7 @@ def start_dungeon(driver, avatars, cur_main_char, rot_main_char, default_team, r
         driver.find_element_by_xpath('//p/input[@name="ok"]').click()
 
         # empty the temporary bag for each character 
-        for id in replaced_team:
-            try:
-                driver.get(f"http://delta.world-of-dungeons.org/wod/spiel/hero/items.php?session_hero_id={id}")
-                delay()
-            except Exception:
-                print(f"Cannot have access to the repository of character {id}")
+        empty_bag(driver, replaced_team)
         # request the dungeon
         try:
             driver.get(f"http://delta.world-of-dungeons.org/wod/spiel/settings/heroes.php?session_hero_id={rot_main_char}")
@@ -228,7 +237,7 @@ def auto_rotation():
     time1 = start_dungeon(driver, avatars, default_team[0], team1[0], default_team, team1)
     time2 = start_dungeon(driver, avatars, default_team[0], team2[0], default_team, team2)
     next_time = find_latest(time1, time2)
-    delay()
+    empty_bag(driver, default_team)
     # TODO: need to change activation or record the result when finishing the battle
     # print(record_trophies(driver, avatars['Frint']))
     driver.quit()
