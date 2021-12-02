@@ -10,6 +10,7 @@ from bs4 import BeautifulSoup
 
 import json
 import time
+import random
 
 def delay(sec=5):
     """sleep to wait the loading
@@ -170,7 +171,8 @@ def start_dungeon(driver, avatars, cur_main_char, rot_main_char, default_team, r
             print(f'Speed up dungeon for main character {rot_main_char}')
         # except WebDriverException:
         #     print("Something went wrong with the website...")
-        #     delay(30)
+        #     delay(30)1937555
+        
         except NoSuchElementException:
             # TODO: While finishing a time-limited dungeon, there could be no regular dungeon to start...
             print(f"No dungeon is avaliable to speed up for main character {rot_main_char}")
@@ -234,18 +236,19 @@ def auto_rotation():
 
     # enable the headless browser
     driver = start_browser(True)
-    time1 = start_dungeon(driver, avatars, default_team[0], team1[0], default_team, team1)
-    time2 = start_dungeon(driver, avatars, default_team[0], team2[0], default_team, team2)
-    next_time = find_latest(time1, time2)
+    # time1 = start_dungeon(driver, avatars, default_team[0], team1[0], default_team, team1)
+    # time2 = start_dungeon(driver, avatars, default_team[0], team2[0], default_team, team2)
+    # next_time = find_latest(time1, time2)
     empty_bag(driver, default_team)
     # TODO: need to change activation or record the result when finishing the battle
     # print(record_trophies(driver, avatars['Frint']))
     driver.quit()
     print("****************END ROTATION****************")
+    next_time = time.strftime("%H:%M", time.gmtime())
     return wrap_time(next_time)  # wrapped as GM time
 
 while True:
     print(f"Current time: {time.strftime('%m-%d %H:%M', time.gmtime())}")
     next_time = auto_rotation()
     print(f"Next dungeon will start on : {next_time}")
-    delay(sleep_time(next_time) + 60)
+    delay(sleep_time(next_time) + random.randint(20000, 30000))
