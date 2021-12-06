@@ -235,7 +235,7 @@ def auto_rotation():
     team2 = [avatars[name] for name in cf['team2']] 
 
     # enable the headless browser
-    driver = start_browser(True)
+    driver = start_browser(headless=False)
     # time1 = start_dungeon(driver, avatars, default_team[0], team1[0], default_team, team1)
     # time2 = start_dungeon(driver, avatars, default_team[0], team2[0], default_team, team2)
     # next_time = find_latest(time1, time2)
@@ -251,4 +251,6 @@ while True:
     print(f"Current time: {time.strftime('%m-%d %H:%M', time.gmtime())}")
     next_time = auto_rotation()
     print(f"Next dungeon will start on : {next_time}")
-    delay(sleep_time(next_time) + random.randint(20000, 30000))
+    print(f"Sleep time : {sleep_time(next_time) + random.randint(20, 30)}")
+    # delay(sleep_time(next_time) + random.randint(20, 30))
+    delay(random.randint(82800, 86400))

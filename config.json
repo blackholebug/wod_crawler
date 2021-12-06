@@ -9,9 +9,10 @@
         "Bubu": 106542, 
         "Artanis": 106402, 
         "Russ": 106407,
-        "Keraia":102110
+        "Keraia":102110,
+        "Wolf":101969
         },
-    "default_team": ["Volo", "Jan", "Shiqian","Keraia"], 
+    "default_team": ["Volo", "Jan", "Shiqian","Keraia","Wolf"], 
     "team1": ["Frint", "Phaziben", "Baggins"], 
     "team2": ["Russ", "Bubu", "Artanis"] 
 }
