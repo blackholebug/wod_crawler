@@ -252,6 +252,6 @@ while True:
     next_time = auto_rotation()
     print(f"Next dungeon will start on : {next_time}")
     # delay(sleep_time(next_time) + random.randint(20, 30))
-    sleep_seonds = random.randint(41400, 43200)
+    sleep_seonds = random.randint(28800, 43200)
     print(f"Random sleep seconds: {sleep_seonds}")
     delay(sleep_seonds)
