@@ -10,9 +10,10 @@
         "Artanis": 106402, 
         "Russ": 106407,
         "Keraia":102110,
-        "Wolf":101969
+        "Wolf":101969,
+        "Eli":107419
         },
-    "default_team": ["Volo", "Jan", "Shiqian","Keraia","Wolf"], 
+    "default_team": ["Volo", "Shiqian","Eli"], 
     "team1": ["Frint", "Phaziben", "Baggins"], 
     "team2": ["Russ", "Bubu", "Artanis"] 
 }
